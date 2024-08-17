@@ -1,7 +1,7 @@
+# app\crud\user.py
 from sqlalchemy.orm import Session
 from app.db.models.user import User
 from app.schemas.user import UserCreate
-from app.core.security import hash_password
 
 def get_user(db: Session, user_id: str):
     return db.query(User).filter(User.id == user_id).first()
@@ -23,7 +23,6 @@ def update_user(db: Session, user_id: str, updated_user: UserCreate):
     user = db.query(User).filter(User.id == user_id).first()
     if user:
         user.email = updated_user.email
-        user.hashed_password = hash_password(updated_user.password)
         user.full_name = updated_user.full_name
         db.commit()
         db.refresh(user)

@@ -1,8 +1,8 @@
-"""Initial migration
+"""user with out password
 
-Revision ID: 28a4ed9bca06
+Revision ID: 41421d621f20
 Revises: 
-Create Date: 2024-08-16 17:39:51.613504
+Create Date: 2024-08-17 15:45:24.170205
 
 """
 from typing import Sequence, Union
@@ -12,7 +12,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision: str = '28a4ed9bca06'
+revision: str = '41421d621f20'
 down_revision: Union[str, None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -23,7 +23,6 @@ def upgrade() -> None:
     op.create_table('users',
     sa.Column('id', sa.String(), nullable=False),
     sa.Column('email', sa.String(), nullable=False),
-    sa.Column('hashed_password', sa.String(), nullable=False),
     sa.Column('full_name', sa.String(), nullable=True),
     sa.PrimaryKeyConstraint('id')
     )
@@ -54,9 +53,7 @@ def upgrade() -> None:
     sa.Column('question', sa.String(), nullable=False),
     sa.Column('answer', sa.String(), nullable=False),
     sa.Column('deck_id', sa.Integer(), nullable=True),
-    sa.Column('owner_id', sa.String(), nullable=True),
     sa.ForeignKeyConstraint(['deck_id'], ['decks.id'], ),
-    sa.ForeignKeyConstraint(['owner_id'], ['users.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_index(op.f('ix_flashcards_id'), 'flashcards', ['id'], unique=False)
