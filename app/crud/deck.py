@@ -5,6 +5,9 @@ from app.schemas.deck import DeckCreate
 def get_deck(db: Session, deck_id: int):
     return db.query(Deck).filter(Deck.id == deck_id).first()
 
+def get_user_decks(db: Session, user_id: str):
+    return db.query(Deck).filter(Deck.owner_id == user_id).all()
+
 def get_decks(db: Session, skip: int = 0, limit: int = 10):
     return db.query(Deck).offset(skip).limit(limit).all()
 
