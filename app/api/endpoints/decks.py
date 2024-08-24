@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from app.schemas.deck import DeckCreate, DeckResponse
-from app.crud.deck import get_deck, create_deck, get_user_decks, delete_deck, update_deck
+from app.crud.deck import create_deck, get_user_decks, delete_deck, update_deck
 from app.db.session import get_db
 
 router = APIRouter()
@@ -10,12 +10,12 @@ router = APIRouter()
 def create_new_deck(deck: DeckCreate, db: Session = Depends(get_db)):
     return create_deck(db=db, deck=deck)
 
-@router.get("/{deck_id}", response_model=DeckResponse)
-def read_deck(deck_id: int, db: Session = Depends(get_db)):
-    db_deck = get_deck(db, deck_id=deck_id)
-    if db_deck is None:
-        raise HTTPException(status_code=404, detail="Deck not found")
-    return db_deck
+# @router.get("/{deck_id}", response_model=DeckResponse)
+# def read_deck(deck_id: int, db: Session = Depends(get_db)):
+#     db_deck = get_deck(db, deck_id=deck_id)
+#     if db_deck is None:
+#         raise HTTPException(status_code=404, detail="Deck not found")
+#     return db_deck
 
 @router.get("/", response_model=list[DeckResponse])
 def read_decks(skip: int = 0, limit: int = 10, db: Session = Depends(get_db)):
