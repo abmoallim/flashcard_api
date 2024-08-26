@@ -9,7 +9,7 @@ class Flashcard(Base):
     question = Column(String, nullable=False)
     answer = Column(String, nullable=False)
     deck_id = Column(Integer, ForeignKey("decks.id"))
-    owner_id = Column(String, ForeignKey("users.id")) 
+    
 
     deck = relationship("Deck", back_populates="flashcards")
-    owner = relationship("User", back_populates="flashcards")  #
+    

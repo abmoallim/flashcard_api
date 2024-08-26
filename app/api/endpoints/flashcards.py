@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from app.schemas.flashcard import FlashcardCreate, FlashcardResponse
-from app.crud.flashcard import get_flashcard, create_flashcard, get_flashcards, delete_flashcard, update_flashcard
+from app.crud.flashcard import get_flashcard, create_flashcard, get_flashcards_by_deck, delete_flashcard, update_flashcard
 from app.db.session import get_db
 
 router = APIRouter()
@@ -11,17 +11,17 @@ def create_new_flashcard(flashcard: FlashcardCreate, db: Session = Depends(get_d
     return create_flashcard(db=db, flashcard=flashcard)
 
 
-@router.get("/", response_model=list[FlashcardResponse])
-def read_flashcards(deck_id: int, owner_id: str, db: Session = Depends(get_db)):
-    flashcards = get_flashcards_by_deck_and_owner(db, deck_id=deck_id, owner_id=owner_id)
+@router.get("/{deck_id}", response_model=list[FlashcardResponse])
+def read_flashcards(deck_id: int, db: Session = Depends(get_db)):
+    flashcards = get_flashcards_by_deck(db, deck_id=deck_id)
     if flashcards is None:
         raise HTTPException(status_code=404, detail="Flashcards not found")
     return flashcards
 
 
 # @router.get("/", response_model=list[FlashcardResponse])
-# def read_flashcards(skip: int = 0, limit: int = 10, db: Session = Depends(get_db)):
-#     flashcards = get_flashcards(db, skip=skip, limit=limit)
+# def read_flashcards( db: Session = Depends(get_db)):
+#     flashcards = get_flashcards(db)
 #     return flashcards
 
 @router.delete("/{flashcard_id}", response_model=FlashcardResponse)

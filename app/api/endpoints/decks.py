@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from app.schemas.deck import DeckCreate, DeckResponse
-from app.crud.deck import create_deck, get_user_decks, delete_deck, update_deck
+from app.crud.deck import create_deck,get_decks, get_user_decks, delete_deck, update_deck
 from app.db.session import get_db
 
 router = APIRouter()
